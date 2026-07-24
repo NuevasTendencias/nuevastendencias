@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @keyframes ntFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+<div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E7E5F0;border-radius:18px;overflow:hidden;box-shadow:0 1px 3px rgba(30,27,46,0.06);height:100%">
+  <div style="position:relative;width:100%;aspect-ratio:4/3">
+    <image-slot id="{{ imgId }}" shape="rect" placeholder="{{ imgPlaceholder }}" style="width:100%;height:100%"></image-slot>
+    <div style="position:absolute;top:14px;left:14px;background:linear-gradient(120deg,#00A8E4,#603C9C);color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.04em;padding:6px 12px;border-radius:100px">UBICACIÓN {{ index }}</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:22px 22px 24px">
+    <div>
+      <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:19px;color:#1E1B2E;line-height:1.25">{{ title }}</div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px;font-family:'Inter',sans-serif;font-size:14px;color:#5B5670">
+        <span>{{ address }}</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <span style="font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:#4A3A72;background:#F2EDFB;border-radius:100px;padding:5px 11px">{{ tipo }}</span>
+      <span style="font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:#00647F;background:#E4F6FC;border-radius:100px;padding:5px 11px">{{ iluminacionLabel }}</span>
+      <span style="font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:#5B5670;background:#F5F6FA;border-radius:100px;padding:5px 11px">{{ traffic }}</span>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <a href="{{ whatsappHref }}" target="_blank" rel="noopener" style="flex:1;text-align:center;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:#fff;background:#25D366;border-radius:10px;padding:11px 14px;text-decoration:none" style-hover="background:#1FBE5A">Consultar disponibilidad</a>
+      <button onclick="{{ toggleMap }}" style="font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:#4A3A72;background:#fff;border:1.5px solid #DCD5EE;border-radius:10px;padding:11px 16px;cursor:pointer" style-hover="border-color:#603C9C">{{ mapButtonLabel }}</button>
+    </div>
+    <sc-if value="{{ expanded }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:6px;border-radius:12px;overflow:hidden;border:1px solid #E7E5F0;animation:ntFadeIn 0.25s ease">
+        <iframe src="{{ mapEmbedUrl }}" style="width:100%;height:220px;border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:520},&quot;index&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;01&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Av. 25 de Mayo&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;address&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Resistencia, Chaco&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tipo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cartelera vía pública&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;traffic&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Alto tránsito&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;iluminado&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;lat&quot;:{&quot;editor&quot;:null,&quot;default&quot;:-27.4530,&quot;tsType&quot;:&quot;number&quot;},&quot;lng&quot;:{&quot;editor&quot;:null,&quot;default&quot;:-58.9866,&quot;tsType&quot;:&quot;number&quot;},&quot;imgId&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;loc-1&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;imgPlaceholder&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;Foto del soporte&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;5493731626491&quot;,&quot;tsType&quot;:&quot;string&quot;}}">class Component extends DCLogic {
+  state = { expanded: true };
+  renderVals() {
+    const p = this.props;
+    const lat = p.lat, lng = p.lng;
+    const mapEmbedUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng + '&z=16&output=embed';
+    const waNumber = (p.whatsapp || '').replace(/\D/g, '');
+    const msg = encodeURIComponent('Hola, quiero consultar disponibilidad de la ubicación "' + p.title + '".');
+    return {
+      index: p.index,
+      title: p.title,
+      address: p.address,
+      tipo: p.tipo ? p.tipo : 'Cartelera vía pública',
+      traffic: p.traffic ? p.traffic : 'Alto tránsito',
+      iluminacionLabel: (p.iluminado === false) ? 'Sin iluminación' : 'Iluminado',
+      imgId: p.imgId,
+      imgPlaceholder: p.imgPlaceholder ? p.imgPlaceholder : 'Foto del soporte',
+      whatsappHref: 'https://wa.me/' + waNumber + '?text=' + msg,
+      mapEmbedUrl: mapEmbedUrl,
+      expanded: this.state.expanded,
+      mapButtonLabel: this.state.expanded ? 'Ocultar mapa' : 'Ver mapa interactivo',
+      toggleMap: function() {
+        this.setState(function(s) { return { expanded: !s.expanded }; });
+      }.bind(this)
+    };
+  }
+}
+</script>
+</body>
+</html>
