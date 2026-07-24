@@ -124,13 +124,21 @@
       <div style="max-width:640px;margin:0 0 48px">
         <span style="font-family:'Inter',sans-serif;font-weight:300;font-size:13px;letter-spacing:0.08em;color:#3A3A45">UBICACIONES DISPONIBLES</span>
         <h2 style="font-family:'Inter',sans-serif;font-weight:700;font-size:34px;color:#3d2f77;margin:10px 0 12px;text-wrap:pretty">Ubicaciones Premium en Chaco y Corrientes</h2>
-        <p style="font-size:15.5px;line-height:1.6;color:#5B5670;margin:0">Explorá cada soporte y abrí su mapa interactivo para ubicarlo con precisión.</p>
+        <p style="font-size:15.5px;line-height:1.6;color:#5B5670;margin:0 0 24px">Explorá cada soporte y abrí su mapa interactivo para ubicarlo con precisión.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ filterButtons }}" as="f" hint-placeholder-count="5">
+            <button onclick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+        </div>
       </div>
       <div class="nt-loc-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
         <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="6">
-          <dc-import name="LocationCard" index="{{ loc.index }}" title="{{ loc.title }}" address="{{ loc.address }}" tipo="{{ loc.tipo }}" traffic="{{ loc.traffic }}" iluminado="{{ loc.iluminado }}" lat="{{ loc.lat }}" lng="{{ loc.lng }}" img-id="{{ loc.imgId }}" img-placeholder="{{ loc.imgPlaceholder }}" whatsapp="{{ whatsappNumber }}" hint-size="100%,520px"></dc-import>
+          <dc-import name="LocationCard" index="{{ loc.index }}" title="{{ loc.title }}" address="{{ loc.address }}" tipo="{{ loc.tipo }}" categoria="{{ loc.categoria }}" traffic="{{ loc.traffic }}" iluminado="{{ loc.iluminado }}" lat="{{ loc.lat }}" lng="{{ loc.lng }}" img-id="{{ loc.imgId }}" img-placeholder="{{ loc.imgPlaceholder }}" whatsapp="{{ whatsappNumber }}" hint-size="100%,520px"></dc-import>
         </sc-for>
       </div>
+      <sc-if value="{{ hasNoResults }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:48px 0;color:#5B5670;font-size:15px">No hay ubicaciones en esta categoría todavía.</div>
+      </sc-if>
     </div>
   </section>
 
@@ -168,8 +176,8 @@
       <div style="text-align:center;margin-bottom:36px">
         <span style="font-family:'Inter',sans-serif;font-weight:300;font-size:22px;letter-spacing:0.01em;color:#3A3A45">Confiaron en nosotros</span>
       </div>
-      <div class="nt-clients-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:18px">
-        <sc-for list="{{ clientSlots }}" as="c" hint-placeholder-count="6">
+      <div class="nt-clients-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px">
+        <sc-for list="{{ clientSlots }}" as="c" hint-placeholder-count="10">
           <div style="background:transparent;border-radius:14px;aspect-ratio:2/1;overflow:hidden">
             <image-slot id="{{ c }}" shape="rect" placeholder="Logo cliente" style="width:100%;height:100%"></image-slot>
           </div>
@@ -221,7 +229,7 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;whatsappNumber&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;5493731626491&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;},&quot;showTraffic&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ubicaciones&quot;}}">class Component extends DCLogic {
-  state = { menuOpen: false };
+  state = { menuOpen: false, activeFilter: 'Todas' };
   renderVals() {
     const whatsappNumber = this.props.whatsappNumber ? this.props.whatsappNumber : '5493731626491';
     const waMsg = encodeURIComponent('Hola, quiero consultar disponibilidad de espacios publicitarios de Nuevas Tendencias.');
@@ -234,12 +242,13 @@
     ];
 
     const rawLocations = [
-      { index: '01', title: 'Puente General Belgrano', address: 'Acceso Resistencia–Corrientes, Chaco', tipo: 'Cartelera de gran formato', traffic: 'Cruce interprovincial, alto tránsito', iluminado: true, lat: -27.463093, lng: -58.868131 },
-      { index: '02', title: 'RN16 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', traffic: 'Avenida principal, alto tránsito', iluminado: true, lat: -27.432823, lng: -58.925944 },
-      { index: '03', title: 'Acceso por Av. 25 de mayo', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4360557, lng: -59.0035944 },
-      { index: '04', title: 'Zona Sur Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', traffic: 'Zona de acceso, tránsito constante', iluminado: false, lat: -27.476687, lng: -59.0006444 },
-      { index: '05', title: 'Acceso Norte por Av. Sarmiento', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4274844, lng: -58.9603094 },
-      { index: '06', title: 'RN11 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', traffic: 'Consultar', iluminado: true, lat: -27.3725140, lng: -58.9951011 }
+      { index: '01', title: 'Puente General Belgrano', address: 'Acceso Resistencia–Corrientes, Chaco', tipo: 'Cartelera de gran formato', categoria: 'Gran Formato', traffic: 'Cruce interprovincial, alto tránsito', iluminado: true, lat: -27.463093, lng: -58.868131 },
+      { index: '02', title: 'RN16 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Avenida principal, alto tránsito', iluminado: true, lat: -27.432823, lng: -58.925944 },
+      { index: '03', title: 'Acceso por Av. 25 de mayo', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4360557, lng: -59.0035944 },
+      { index: '04', title: 'Zona Sur Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Zona de acceso, tránsito constante', iluminado: false, lat: -27.476687, lng: -59.0006444 },
+      { index: '05', title: 'Acceso Norte por Av. Sarmiento', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4274844, lng: -58.9603094 },
+      { index: '06', title: 'RN11 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Consultar', iluminado: true, lat: -27.3725140, lng: -58.9951011 },
+      { index: '07', title: 'Av. Sarmiento y Montaner', address: 'Resistencia, Chaco', tipo: 'Pantalla LED', categoria: 'Pantalla LED', traffic: 'Zona de acceso, tránsito constante', iluminado: true, lat: -27.4358395, lng: -58.969524 }
     ];
     const locations = rawLocations.map(function(l, i) {
       return Object.assign({}, l, {
@@ -249,7 +258,21 @@
       });
     });
 
-    const clientSlots = ['client-1', 'client-2', 'client-3', 'client-4', 'client-5', 'client-6'];
+    const filterCategories = ['Todas', 'Gran Formato', 'Pantalla LED', 'Séxtuples', 'Hipervallas'];
+    const activeFilter = this.state.activeFilter;
+    const filteredLocations = (activeFilter === 'Todas') ? locations : locations.filter(function(l) { return l.categoria === activeFilter; });
+    const filterButtons = filterCategories.map(function(cat) {
+      return {
+        label: cat,
+        active: cat === activeFilter,
+        style: (cat === activeFilter)
+          ? 'font-family:\'Inter\',sans-serif;font-weight:600;font-size:14px;color:#fff;background:#3d2f77;border:1.5px solid #3d2f77;border-radius:100px;padding:9px 20px;cursor:pointer'
+          : 'font-family:\'Inter\',sans-serif;font-weight:600;font-size:14px;color:#3d2f77;background:#fff;border:1.5px solid #DCD5EE;border-radius:100px;padding:9px 20px;cursor:pointer',
+        onClick: function() { this.setState({ activeFilter: cat }); }.bind(this)
+      };
+    }.bind(this));
+
+    const clientSlots = ['client-1', 'client-2', 'client-3', 'client-4', 'client-5', 'client-6', 'client-7', 'client-8', 'client-9', 'client-10'];
 
     return {
       menuOpen: this.state.menuOpen,
@@ -258,7 +281,9 @@
       whatsappNumber: whatsappNumber,
       waHref: 'https://wa.me/' + whatsappNumber + '?text=' + waMsg,
       services: services,
-      locations: locations,
+      locations: filteredLocations,
+      filterButtons: filterButtons,
+      hasNoResults: filteredLocations.length === 0,
       clientSlots: clientSlots,
       officeMapUrl: 'https://www.google.com/maps?q=' + encodeURIComponent('Güemes 76, Resistencia, Chaco, Argentina') + '&z=16&output=embed'
     };
