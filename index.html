@@ -132,7 +132,7 @@
         </div>
       </div>
       <div class="nt-loc-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
-        <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="8">
+        <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="12">
           <dc-import name="LocationCard" index="{{ loc.index }}" title="{{ loc.title }}" address="{{ loc.address }}" tipo="{{ loc.tipo }}" categoria="{{ loc.categoria }}" traffic="{{ loc.traffic }}" iluminado="{{ loc.iluminado }}" lat="{{ loc.lat }}" lng="{{ loc.lng }}" img-id="{{ loc.imgId }}" img-placeholder="{{ loc.imgPlaceholder }}" whatsapp="{{ whatsappNumber }}" hint-size="100%,520px"></dc-import>
         </sc-for>
       </div>
@@ -249,7 +249,11 @@
       { index: '05', title: 'Acceso Norte por Av. Sarmiento', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4274844, lng: -58.9603094 },
       { index: '06', title: 'RN11 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Consultar', iluminado: true, lat: -27.3725140, lng: -58.9951011 },
       { index: '07', title: 'Av. Sarmiento y Montaner', address: 'Resistencia, Chaco', tipo: 'Pantalla LED', categoria: 'Pantalla LED', traffic: 'Zona de acceso, tránsito constante', iluminado: true, lat: -27.4358395, lng: -58.969524 },
-      { index: '08', title: 'Av. Marconi y Calle Brasil', address: 'Fontana, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Avenida principal', iluminado: false, lat: -27.4228382, lng: -59.0470482 }
+      { index: '08', title: 'Av. Marconi y Calle Brasil', address: 'Fontana, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Avenida principal', iluminado: false, lat: -27.4228382, lng: -59.0470482 },
+      { index: '09', title: 'Ruta Nacional 16 Km29 A', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
+      { index: '10', title: 'Ruta Nacional 16 Km29 B', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
+      { index: '11', title: 'Ruta Nacional 16 Km29 C', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
+      { index: '12', title: 'Ruta Nacional 16 Km29 D', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 }
     ];
     const locations = rawLocations.map(function(l, i) {
       return Object.assign({}, l, {
@@ -259,7 +263,7 @@
       });
     });
 
-    const filterCategories = ['Todas', 'Gran Formato', 'Pantalla LED', 'Séxtuples', 'Hipervallas'];
+    const filterCategories = ['Todas', 'Gran Formato', 'Gran Formato Rutero', 'Pantalla LED', 'Séxtuples', 'Hipervallas'];
     const activeFilter = this.state.activeFilter;
     const filteredLocations = (activeFilter === 'Todas') ? locations : locations.filter(function(l) { return l.categoria === activeFilter; });
     const filterButtons = filterCategories.map(function(cat) {
