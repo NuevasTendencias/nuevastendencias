@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Guía de uso — Nuevas Tendencias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F5FB;
+    --surface: #FFFFFF;
+    --ink: #1E1B2E;
+    --muted: #5B5670;
+    --line: #E4E1F0;
+    --line-soft: #EEEBF6;
+    --accent: #3D2F77;
+    --accent-strong: #2E2359;
+    --accent-2: #00A8E4;
+    --accent-ink: #FFFFFF;
+    --success: #1FA05A;
+    --success-bg: #E7F7EE;
+    --warn: #B33333;
+    --warn-bg: #FBE7E7;
+    --night: #0F0C1E;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  h1, h2, h3 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+  a { color: var(--accent-2); }
+  strong { font-weight: 700; }
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.92em;
+    background: var(--line-soft);
+    border-radius: 5px;
+    padding: 0.15em 0.4em;
+  }
+
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+
+  /* ---------- header band ---------- */
+  header.hero {
+    background:
+      radial-gradient(900px 420px at 12% -20%, rgba(0,168,228,0.30), transparent 60%),
+      radial-gradient(760px 480px at 100% 10%, rgba(96,60,156,0.40), transparent 55%),
+      var(--night);
+    color: #fff;
+    padding: 56px 28px 48px;
+  }
+  header.hero .wrap { max-width: 760px; margin: 0 auto; }
+  header.hero .eyebrow { color: #8FE0FF; margin-bottom: 14px; display: block; }
+  header.hero h1 {
+    color: #fff;
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 1.02;
+  }
+  header.hero p.lede {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: #C9C4DE;
+    max-width: 46ch;
+    margin: 18px 0 26px;
+  }
+  .url-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 100px;
+    padding: 10px 18px 10px 16px;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 14.5px;
+    color: #fff;
+  }
+  .url-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex: none; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 0 28px 100px; }
+  .wide { max-width: 920px; }
+
+  /* ---------- requisitos ---------- */
+  section.requisitos {
+    margin-top: -28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    box-shadow: 0 18px 36px rgba(30,27,46,0.10);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  section.requisitos .item .eyebrow { color: var(--accent); font-size: 11px; }
+  section.requisitos .item p { margin: 6px 0 0; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
+  section.requisitos .item p strong { color: var(--ink); }
+
+  /* ---------- section headers ---------- */
+  section.block { margin-top: 64px; }
+  section.block > .eyebrow { display: block; margin-bottom: 10px; }
+  section.block > h2 { font-size: clamp(24px, 4vw, 30px); color: var(--accent); margin-bottom: 8px; }
+  section.block > p.intro { color: var(--muted); font-size: 15.5px; max-width: 58ch; margin: 0 0 32px; }
+
+  /* ---------- numbered steps ---------- */
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  ol.steps > li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+  ol.steps > li:first-child { border-top: none; padding-top: 4px; }
+  ol.steps > li:last-child { padding-bottom: 4px; }
+  .step-num {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .step-body h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .step-body p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .step-body p:last-child { margin-bottom: 0; }
+  .step-body .fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 12px 0 4px;
+  }
+  .field-chip {
+    font-size: 12.5px;
+    font-weight: 600;
+    background: var(--line-soft);
+    color: var(--accent-strong);
+    border-radius: 7px;
+    padding: 5px 10px;
+  }
+  .btn-example {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-radius: 8px;
+    padding: 6px 13px;
+  }
+
+  /* ---------- callout ---------- */
+  .callout {
+    border-radius: 13px;
+    padding: 20px 22px;
+    margin-top: 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .callout.tip { background: var(--success-bg); color: #16653F; }
+  .callout.warn { background: var(--warn-bg); color: #8A2A2A; }
+  .callout .callout-title { font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; display: block; }
+  .callout ol, .callout ul { margin: 8px 0 0; padding-left: 20px; }
+  .callout li { margin-bottom: 4px; }
+
+  /* ---------- reference card grid ---------- */
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 24px 26px;
+  }
+  .ref-card h3 {
+    font-family: 'Inter', sans-serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 700;
+    font-size: 16.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ref-card h3 .ico {
+    width: 30px; height: 30px; border-radius: 9px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--line-soft); color: var(--accent);
+  }
+  .ref-card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .ref-card p + p { margin-top: 8px; }
+
+  /* ---------- faq ---------- */
+  .faq { border-top: 1px solid var(--line); }
+  .faq details {
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15.5px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .faq summary > span:first-child { min-width: 0; }
+  .faq summary .plus { flex: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .plus {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 24px;
+    color: var(--accent);
+    flex: none;
+    transition: transform 0.15s ease;
+  }
+  .faq details[open] summary .plus { transform: rotate(45deg); }
+  .faq p { color: var(--muted); font-size: 14.5px; margin: 12px 0 0; max-width: 62ch; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 70px;
+    padding: 26px 28px 40px;
+  }
+  footer .wrap { max-width: 760px; margin: 0 auto; color: var(--muted); font-size: 13.5px; }
+
+  @media (max-width: 720px) {
+    section.requisitos { grid-template-columns: 1fr; margin-top: 24px; box-shadow: none; }
+    .card-grid { grid-template-columns: 1fr; }
+    ol.steps > li { grid-template-columns: 40px 1fr; gap: 14px; }
+    .step-num { font-size: 30px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq summary .plus { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Nuevas Tendencias · Uso interno</span>
+    <h1>Guía del Panel de Contenido</h1>
+    <p class="lede">Cómo cargar, editar y eliminar carteles del sitio web sin tocar una línea de código. Pensada para cualquiera del equipo, sin conocimientos técnicos.</p>
+    <span class="url-chip"><span class="dot"></span>nuevastendencias.ar/contenido</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="requisitos">
+    <div class="item">
+      <span class="eyebrow">Necesitás</span>
+      <p><strong>Una cuenta de Google</strong> terminada en <code>@nuevastendencias.ar</code>. Con cualquier otra cuenta, el panel no te va a dejar entrar.</p>
+    </div>
+    <div class="item">
+      <span class="eyebrow">Para las fotos</span>
+      <p><strong>Una imagen JPG o PNG</strong> del cartel. No hace falta editarla antes — el panel la ajusta solo.</p>
+    </div>
+    <div class="item">
+      <span class="eyebrow">Para la ubicación</span>
+      <p><strong>Las coordenadas del lugar</strong>, copiadas de Google Maps. Más abajo te mostramos exactamente cómo sacarlas.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <span class="eyebrow">Guía principal</span>
+    <h2>Cargar una ubicación nueva</h2>
+    <p class="intro">Es lo que vas a hacer más seguido: agregar un cartel al sitio. Son seis pasos, de punta a punta.</p>
+
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <div class="step-body">
+          <h3>Entrá al panel</h3>
+          <p>Abrí <strong>nuevastendencias.ar/contenido</strong> en el navegador y hacé click en el botón <strong>"Sign in with Google"</strong>. Elegí tu cuenta <code>@nuevastendencias.ar</code>.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <div class="step-body">
+          <h3>Abrí el formulario de carga</h3>
+          <p>Arriba a la derecha de la lista de ubicaciones, hacé click en <span class="btn-example">+ Nueva ubicación</span>. Se abre un panel a la derecha con el formulario vacío.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <div class="step-body">
+          <h3>Completá los datos del cartel</h3>
+          <p>Cargá cada campo con la información real del soporte:</p>
+          <div class="fields">
+            <span class="field-chip">Título</span>
+            <span class="field-chip">Dirección</span>
+            <span class="field-chip">Tipo</span>
+            <span class="field-chip">Categoría</span>
+            <span class="field-chip">Tránsito / zona</span>
+            <span class="field-chip">Iluminado</span>
+          </div>
+          <p><strong>Categoría</strong> es una lista desplegable con cinco opciones fijas: Gran Formato, Gran Formato Rutero, Pantalla LED, Séxtuples e Hipervallas. Elegí la que mejor describe el soporte. <strong>Iluminado</strong> es un tilde: marcalo si el cartel tiene luz propia.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <div class="step-body">
+          <h3>Pegá las coordenadas</h3>
+          <p>En el campo <strong>Coordenadas</strong>, pegá el par que copiaste de Google Maps, tal cual, con la coma en el medio — por ejemplo <code>-27.463093, -58.868131</code>.</p>
+          <div class="callout tip">
+            <span class="callout-title">Cómo sacar las coordenadas de Google Maps</span>
+            <ol>
+              <li>Abrí Google Maps y buscá la dirección, o hacé click derecho justo sobre el punto exacto donde está el cartel.</li>
+              <li>Va a aparecer un menú con un par de números arriba de todo, con este formato: <code>-27.463093, -58.868131</code>.</li>
+              <li>Hacé click sobre esos números — Maps los copia solo.</li>
+              <li>Volvé al panel y pegalos en el campo Coordenadas (Ctrl+V o Cmd+V).</li>
+            </ol>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">5</span>
+        <div class="step-body">
+          <h3>Subí la foto</h3>
+          <p>Arrastrá el archivo de imagen directo al recuadro punteado, o hacé click sobre él para elegirlo desde tu computadora. El panel la redimensiona y la optimiza automáticamente — no hace falta que la edites ni la comprimas antes.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">6</span>
+        <div class="step-body">
+          <h3>Guardá</h3>
+          <p>Click en <span class="btn-example">Guardar</span>. El panel te avisa cuando terminó.</p>
+          <div class="callout tip">
+            <span class="callout-title">Importante</span>
+            <p style="margin:0">El cambio no se ve <em>al instante</em> en la web pública — el sitio tarda unos minutos en actualizarse solo. Si guardaste y todavía no lo ves en <strong>nuevastendencias.ar</strong>, esperá un ratito y refrescá la página.</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block wide">
+    <span class="eyebrow">Otras tareas</span>
+    <h2>Editar, eliminar y buscar</h2>
+    <p class="intro">El resto de las tareas del día a día, todas desde la lista principal del panel.</p>
+
+    <div class="card-grid">
+      <div class="ref-card">
+        <h3><span class="ico">✎</span>Editar una ubicación</h3>
+        <p>Buscá la tarjeta del cartel en la lista y hacé click en <strong>Editar</strong>. Se abre el mismo formulario, ya completado con los datos actuales — modificá lo que necesites y guardá.</p>
+        <p>Si no tocás la foto, la que ya estaba se mantiene sin cambios.</p>
+      </div>
+      <div class="ref-card">
+        <h3><span class="ico">🗑</span>Eliminar una ubicación</h3>
+        <p>Click en <strong>Eliminar</strong> sobre la tarjeta correspondiente. El panel pide confirmación antes de borrar — una vez confirmado, no se puede deshacer.</p>
+      </div>
+      <div class="ref-card">
+        <h3><span class="ico">⌕</span>Buscar y filtrar</h3>
+        <p>Arriba de la lista hay un buscador (por título o dirección) y un desplegable para filtrar por categoría. Los dos se pueden usar juntos.</p>
+      </div>
+      <div class="ref-card">
+        <h3><span class="ico">⏻</span>Cerrar sesión</h3>
+        <p>Botón <strong>Cerrar sesión</strong> arriba a la derecha. Conviene hacerlo si usás una computadora compartida con otros compañeros.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <span class="eyebrow">Si algo no anda</span>
+    <h2>Preguntas frecuentes</h2>
+
+    <div class="faq">
+      <details>
+        <summary><span>No puedo entrar, dice que mi cuenta no tiene acceso</span><span class="plus">+</span></summary>
+        <p>El panel solo acepta cuentas de Google terminadas en <code>@nuevastendencias.ar</code>. Si iniciaste sesión con una cuenta personal (Gmail), cerrala e intentá de nuevo con tu cuenta de la empresa.</p>
+      </details>
+      <details>
+        <summary><span>Guardé un cartel pero no lo veo en la web</span><span class="plus">+</span></summary>
+        <p>Es normal — el sitio se actualiza solo después de guardar, y puede tardar un par de minutos. Esperá un poco y refrescá <strong>nuevastendencias.ar</strong>. Si después de 10 minutos sigue sin aparecer, avisá a quien administra el sitio.</p>
+      </details>
+      <details>
+        <summary><span>Me aparece "Tu sesión expiró"</span><span class="plus">+</span></summary>
+        <p>Las sesiones vencen después de un tiempo por seguridad. No perdiste nada de lo que ya guardaste — simplemente volvé a hacer click en "Sign in with Google" e iniciá sesión de nuevo.</p>
+      </details>
+      <details>
+        <summary><span>Subí una foto pero se ve rara o recortada</span><span class="plus">+</span></summary>
+        <p>Las fotos funcionan mejor si son horizontales y muestran el cartel completo, sin recortes previos. Si una foto vertical o muy angosta se ve distorsionada en la tarjeta, probá con otra toma más panorámica del soporte.</p>
+      </details>
+      <details>
+        <summary><span>¿Puedo cargar varias ubicaciones seguidas?</span><span class="plus">+</span></summary>
+        <p>Sí, no hay límite. Guardá una, esperá a que el panel confirme, y hacé click de nuevo en "+ Nueva ubicación" para cargar la siguiente.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Panel de Contenido — Nuevas Tendencias. Esta guía es de uso interno del equipo.</div>
+</footer>
+
+</body>
+</html>
