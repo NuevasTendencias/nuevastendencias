@@ -135,8 +135,16 @@
     font-size: 14px;
     font-weight: 500;
     color: #fff;
+    text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
+  .url-chip:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
   .url-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex: none; }
+
+  /* enlaces inline dentro del texto: mismo peso visual que <strong>, pero clicables */
+  .inline-link { color: inherit; font-weight: 600; text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  .inline-link:hover { color: var(--accent-hover); }
+  section.intro .inline-link:hover { color: #fff; }
 
   main { max-width: 700px; margin: 0 auto; padding: 0 24px 90px; }
   .wide { max-width: 900px; }
@@ -332,7 +340,7 @@
     <span class="eyebrow">NUEVAS TENDENCIAS · USO INTERNO</span>
     <h1>Guía del Panel de Contenido</h1>
     <p class="lede">Cómo cargar, editar y eliminar carteles del sitio web sin tocar una línea de código. Pensada para cualquiera del equipo, sin conocimientos técnicos.</p>
-    <span class="url-chip"><span class="dot"></span>nuevastendencias.ar/contenido</span>
+    <a class="url-chip" href="/contenido.html"><span class="dot"></span>nuevastendencias.ar/contenido</a>
   </div>
 </section>
 
@@ -363,7 +371,7 @@
         <span class="step-num">1</span>
         <div class="step-body">
           <h3>Entrá al panel</h3>
-          <p>Abrí <strong>nuevastendencias.ar/contenido</strong> en el navegador y hacé click en el botón <strong>"Sign in with Google"</strong>. Elegí tu cuenta <code>@nuevastendencias.ar</code>.</p>
+          <p>Abrí <a class="inline-link" href="/contenido.html">nuevastendencias.ar/contenido</a> en el navegador y hacé click en el botón <strong>"Sign in with Google"</strong>. Elegí tu cuenta <code>@nuevastendencias.ar</code>.</p>
         </div>
       </li>
       <li>
@@ -419,7 +427,7 @@
           <p>Click en <span class="btn-example">Guardar</span>. El panel te avisa cuando terminó.</p>
           <div class="callout tip">
             <span class="callout-title">Importante</span>
-            <p style="margin:0">El cambio no se ve <em>al instante</em> en la web pública — el sitio tarda unos minutos en actualizarse solo. Si guardaste y todavía no lo ves en <strong>nuevastendencias.ar</strong>, esperá un ratito y refrescá la página.</p>
+            <p style="margin:0">El cambio no se ve <em>al instante</em> en la web pública — el sitio tarda unos minutos en actualizarse solo. Si guardaste y todavía no lo ves en <a class="inline-link" href="https://www.nuevastendencias.ar/" target="_blank" rel="noopener">nuevastendencias.ar</a>, esperá un ratito y refrescá la página.</p>
           </div>
         </div>
       </li>
@@ -463,7 +471,7 @@
       </details>
       <details>
         <summary><span>Guardé un cartel pero no lo veo en la web</span><span class="plus">+</span></summary>
-        <p>Es normal — el sitio se actualiza solo después de guardar, y puede tardar un par de minutos. Esperá un poco y refrescá <strong>nuevastendencias.ar</strong>. Si después de 10 minutos sigue sin aparecer, avisá a quien administra el sitio.</p>
+        <p>Es normal — el sitio se actualiza solo después de guardar, y puede tardar un par de minutos. Esperá un poco y refrescá <a class="inline-link" href="https://www.nuevastendencias.ar/" target="_blank" rel="noopener">nuevastendencias.ar</a>. Si después de 10 minutos sigue sin aparecer, avisá a quien administra el sitio.</p>
       </details>
       <details>
         <summary><span>Me aparece "Tu sesión expiró"</span><span class="plus">+</span></summary>
