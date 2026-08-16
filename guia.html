@@ -7,171 +7,203 @@
 <title>Guía de uso — Nuevas Tendencias</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #F6F5FB;
+    --paper: #F5F6FA;
     --surface: #FFFFFF;
+    --card: #FBFAFD;
     --ink: #1E1B2E;
     --muted: #5B5670;
-    --line: #E4E1F0;
-    --line-soft: #EEEBF6;
+    --line: #EEEBF6;
+    --line-2: #E7E5F0;
+    --chip-bg: #F2EDFB;
     --accent: #3D2F77;
-    --accent-strong: #2E2359;
-    --accent-2: #00A8E4;
-    --accent-ink: #FFFFFF;
+    --accent-2: #4A3A72;
+    --accent-hover: #603C9C;
+    --blue: #00A8E4;
     --success: #1FA05A;
     --success-bg: #E7F7EE;
     --warn: #B33333;
     --warn-bg: #FBE7E7;
     --night: #0F0C1E;
-    --radius: 16px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--paper);
+    background: var(--surface);
     color: var(--ink);
     font-family: 'Inter', sans-serif;
+    font-weight: 400;
     font-size: 16px;
     line-height: 1.55;
   }
   h1, h2, h3 {
-    font-family: 'Big Shoulders Display', sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     text-wrap: balance;
     margin: 0;
     color: var(--ink);
   }
   a { color: var(--accent-2); }
-  strong { font-weight: 700; }
+  a:hover { color: var(--accent-hover); }
+  strong { font-weight: 600; }
   code {
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     font-size: 0.92em;
-    background: var(--line-soft);
+    background: var(--line);
     border-radius: 5px;
     padding: 0.15em 0.4em;
   }
 
   .eyebrow {
     font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 12.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-2);
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: #3A3A45;
   }
 
-  /* ---------- header band ---------- */
-  header.hero {
+  /* ---------- top bar (calca el header sticky del sitio) ---------- */
+  header.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.topbar .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  header.topbar img.logo { height: 34px; width: auto; display: block; }
+  header.topbar .back-link {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--accent-2);
+    text-decoration: none;
+    border: 1.5px solid var(--line-2);
+    border-radius: 100px;
+    padding: 8px 16px;
+    white-space: nowrap;
+  }
+  header.topbar .back-link:hover { border-color: var(--accent); color: var(--accent-hover); }
+
+  /* ---------- intro band (misma fórmula de gradientes que el hero de la home) ---------- */
+  section.intro {
+    position: relative;
+    overflow: hidden;
     background:
-      radial-gradient(900px 420px at 12% -20%, rgba(0,168,228,0.30), transparent 60%),
-      radial-gradient(760px 480px at 100% 10%, rgba(96,60,156,0.40), transparent 55%),
+      radial-gradient(1100px 480px at 15% -20%, rgba(0,168,228,0.30), transparent 60%),
+      radial-gradient(900px 560px at 100% 10%, rgba(96,60,156,0.42), transparent 55%),
       var(--night);
     color: #fff;
-    padding: 56px 28px 48px;
+    padding: 48px 24px 44px;
   }
-  header.hero .wrap { max-width: 760px; margin: 0 auto; }
-  header.hero .eyebrow { color: #8FE0FF; margin-bottom: 14px; display: block; }
-  header.hero h1 {
+  section.intro .wrap { max-width: 700px; margin: 0 auto; position: relative; }
+  section.intro .eyebrow { color: #8FE0FF; margin-bottom: 12px; display: block; }
+  section.intro h1 {
     color: #fff;
-    font-size: clamp(34px, 6vw, 52px);
-    line-height: 1.02;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.12;
   }
-  header.hero p.lede {
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    font-size: 16.5px;
+  section.intro p.lede {
+    font-weight: 300;
+    font-size: 16px;
     line-height: 1.6;
     color: #C9C4DE;
-    max-width: 46ch;
-    margin: 18px 0 26px;
+    max-width: 48ch;
+    margin: 16px 0 24px;
   }
   .url-chip {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
+    border: 1.5px solid rgba(255,255,255,0.25);
     border-radius: 100px;
-    padding: 10px 18px 10px 16px;
+    padding: 9px 18px 9px 15px;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    font-size: 14.5px;
+    font-size: 14px;
+    font-weight: 500;
     color: #fff;
   }
   .url-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex: none; }
 
-  main { max-width: 760px; margin: 0 auto; padding: 0 28px 100px; }
-  .wide { max-width: 920px; }
+  main { max-width: 700px; margin: 0 auto; padding: 0 24px 90px; }
+  .wide { max-width: 900px; }
 
   /* ---------- requisitos ---------- */
   section.requisitos {
-    margin-top: -28px;
+    margin-top: -26px;
+    position: relative;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border-radius: 18px;
     padding: 26px 28px;
     box-shadow: 0 18px 36px rgba(30,27,46,0.10);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 22px;
   }
-  section.requisitos .item .eyebrow { color: var(--accent); font-size: 11px; }
-  section.requisitos .item p { margin: 6px 0 0; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
-  section.requisitos .item p strong { color: var(--ink); }
+  section.requisitos .item .eyebrow { color: var(--accent); font-weight: 600; font-size: 11.5px; letter-spacing: 0.06em; }
+  section.requisitos .item p { margin: 6px 0 0; font-size: 14.5px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+  section.requisitos .item p strong { color: var(--ink); font-weight: 600; }
 
   /* ---------- section headers ---------- */
-  section.block { margin-top: 64px; }
+  section.block { margin-top: 60px; }
   section.block > .eyebrow { display: block; margin-bottom: 10px; }
-  section.block > h2 { font-size: clamp(24px, 4vw, 30px); color: var(--accent); margin-bottom: 8px; }
-  section.block > p.intro { color: var(--muted); font-size: 15.5px; max-width: 58ch; margin: 0 0 32px; }
+  section.block > h2 { font-size: clamp(24px, 4vw, 30px); color: var(--accent); margin-bottom: 10px; }
+  section.block > p.intro { color: var(--muted); font-weight: 300; font-size: 15.5px; line-height: 1.6; max-width: 58ch; margin: 0 0 30px; }
 
   /* ---------- numbered steps ---------- */
   ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
   ol.steps > li {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 20px;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
     padding: 26px 0;
     border-top: 1px solid var(--line);
   }
   ol.steps > li:first-child { border-top: none; padding-top: 4px; }
   ol.steps > li:last-child { padding-bottom: 4px; }
   .step-num {
-    font-family: 'Big Shoulders Display', sans-serif;
-    font-weight: 900;
-    font-size: 40px;
-    line-height: 1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1.3;
     color: var(--accent);
     font-variant-numeric: tabular-nums;
   }
   .step-body h3 {
-    font-family: 'Inter', sans-serif;
     font-weight: 700;
-    text-transform: none;
-    letter-spacing: 0;
     font-size: 17px;
     color: var(--ink);
     margin-bottom: 8px;
   }
-  .step-body p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .step-body p { margin: 0 0 10px; color: var(--muted); font-size: 15px; font-weight: 400; line-height: 1.6; }
   .step-body p:last-child { margin-bottom: 0; }
   .step-body .fields {
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
-    margin: 12px 0 4px;
+    margin: 12px 0 14px;
   }
   .field-chip {
     font-size: 12.5px;
-    font-weight: 600;
-    background: var(--line-soft);
-    color: var(--accent-strong);
-    border-radius: 7px;
-    padding: 5px 10px;
+    font-weight: 700;
+    background: var(--chip-bg);
+    color: var(--accent-2);
+    border-radius: 100px;
+    padding: 5px 12px;
   }
   .btn-example {
     display: inline-flex;
@@ -179,38 +211,36 @@
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 13.5px;
-    color: var(--accent-ink);
+    color: #fff;
     background: var(--accent);
-    border-radius: 8px;
-    padding: 6px 13px;
+    border-radius: 10px;
+    padding: 7px 14px;
   }
 
   /* ---------- callout ---------- */
   .callout {
-    border-radius: 13px;
-    padding: 20px 22px;
+    border-radius: 14px;
+    padding: 18px 20px;
     margin-top: 14px;
     font-size: 14.5px;
+    font-weight: 400;
     line-height: 1.6;
   }
   .callout.tip { background: var(--success-bg); color: #16653F; }
   .callout.warn { background: var(--warn-bg); color: #8A2A2A; }
-  .callout .callout-title { font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; display: block; }
+  .callout .callout-title { font-weight: 700; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
   .callout ol, .callout ul { margin: 8px 0 0; padding-left: 20px; }
   .callout li { margin-bottom: 4px; }
 
   /* ---------- reference card grid ---------- */
-  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .ref-card {
-    background: var(--surface);
+    background: var(--card);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border-radius: 18px;
     padding: 24px 24px 26px;
   }
   .ref-card h3 {
-    font-family: 'Inter', sans-serif;
-    text-transform: none;
-    letter-spacing: 0;
     font-weight: 700;
     font-size: 16.5px;
     margin-bottom: 10px;
@@ -221,9 +251,10 @@
   .ref-card h3 .ico {
     width: 30px; height: 30px; border-radius: 9px; flex: none;
     display: flex; align-items: center; justify-content: center;
-    background: var(--line-soft); color: var(--accent);
+    background: var(--chip-bg); color: var(--accent);
+    font-size: 14px;
   }
-  .ref-card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .ref-card p { margin: 0; color: var(--muted); font-size: 14.5px; font-weight: 300; line-height: 1.6; }
   .ref-card p + p { margin-top: 8px; }
 
   /* ---------- faq ---------- */
@@ -234,7 +265,7 @@
   }
   .faq summary {
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 15.5px;
     list-style: none;
     display: flex;
@@ -242,31 +273,42 @@
     justify-content: space-between;
     gap: 16px;
   }
-  .faq summary > span:first-child { min-width: 0; }
-  .faq summary .plus { flex: none; }
   .faq summary::-webkit-details-marker { display: none; }
+  .faq summary > span:first-child { min-width: 0; }
   .faq summary .plus {
-    font-family: 'Big Shoulders Display', sans-serif;
-    font-size: 24px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
     color: var(--accent);
     flex: none;
     transition: transform 0.15s ease;
   }
   .faq details[open] summary .plus { transform: rotate(45deg); }
-  .faq p { color: var(--muted); font-size: 14.5px; margin: 12px 0 0; max-width: 62ch; }
+  .faq p { color: var(--muted); font-weight: 300; font-size: 14.5px; line-height: 1.6; margin: 12px 0 0; max-width: 62ch; }
 
   footer {
-    border-top: 1px solid var(--line);
+    background: var(--night);
+    border-top: 1px solid rgba(255,255,255,0.08);
     margin-top: 70px;
-    padding: 26px 28px 40px;
+    padding: 30px 24px;
   }
-  footer .wrap { max-width: 760px; margin: 0 auto; color: var(--muted); font-size: 13.5px; }
+  footer .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #8D869F;
+    font-size: 13px;
+  }
+  footer img.logo { height: 22px; width: auto; opacity: 0.9; }
 
   @media (max-width: 720px) {
-    section.requisitos { grid-template-columns: 1fr; margin-top: 24px; box-shadow: none; }
+    section.requisitos { grid-template-columns: 1fr; margin-top: 22px; box-shadow: none; }
     .card-grid { grid-template-columns: 1fr; }
-    ol.steps > li { grid-template-columns: 40px 1fr; gap: 14px; }
-    .step-num { font-size: 30px; }
+    ol.steps > li { grid-template-columns: 34px 1fr; gap: 12px; }
+    .step-num { font-size: 21px; }
+    header.topbar .back-link span.txt { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -276,34 +318,43 @@
 </head>
 <body>
 
-<header class="hero">
+<header class="topbar">
   <div class="wrap">
-    <span class="eyebrow">Nuevas Tendencias · Uso interno</span>
+    <a href="https://www.nuevastendencias.ar/" style="display:flex;align-items:center;text-decoration:none">
+      <img class="logo" src="uploads/Logo NT Rectangular.png" alt="Nuevas Tendencias">
+    </a>
+    <a class="back-link" href="/contenido.html">← <span class="txt">Volver al panel</span></a>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <span class="eyebrow">NUEVAS TENDENCIAS · USO INTERNO</span>
     <h1>Guía del Panel de Contenido</h1>
     <p class="lede">Cómo cargar, editar y eliminar carteles del sitio web sin tocar una línea de código. Pensada para cualquiera del equipo, sin conocimientos técnicos.</p>
     <span class="url-chip"><span class="dot"></span>nuevastendencias.ar/contenido</span>
   </div>
-</header>
+</section>
 
 <main>
 
   <section class="requisitos">
     <div class="item">
-      <span class="eyebrow">Necesitás</span>
+      <span class="eyebrow">NECESITÁS</span>
       <p><strong>Una cuenta de Google</strong> terminada en <code>@nuevastendencias.ar</code>. Con cualquier otra cuenta, el panel no te va a dejar entrar.</p>
     </div>
     <div class="item">
-      <span class="eyebrow">Para las fotos</span>
+      <span class="eyebrow">PARA LAS FOTOS</span>
       <p><strong>Una imagen JPG o PNG</strong> del cartel. No hace falta editarla antes — el panel la ajusta solo.</p>
     </div>
     <div class="item">
-      <span class="eyebrow">Para la ubicación</span>
+      <span class="eyebrow">PARA LA UBICACIÓN</span>
       <p><strong>Las coordenadas del lugar</strong>, copiadas de Google Maps. Más abajo te mostramos exactamente cómo sacarlas.</p>
     </div>
   </section>
 
   <section class="block">
-    <span class="eyebrow">Guía principal</span>
+    <span class="eyebrow">GUÍA PRINCIPAL</span>
     <h2>Cargar una ubicación nueva</h2>
     <p class="intro">Es lo que vas a hacer más seguido: agregar un cartel al sitio. Son seis pasos, de punta a punta.</p>
 
@@ -376,7 +427,7 @@
   </section>
 
   <section class="block wide">
-    <span class="eyebrow">Otras tareas</span>
+    <span class="eyebrow">OTRAS TAREAS</span>
     <h2>Editar, eliminar y buscar</h2>
     <p class="intro">El resto de las tareas del día a día, todas desde la lista principal del panel.</p>
 
@@ -402,7 +453,7 @@
   </section>
 
   <section class="block">
-    <span class="eyebrow">Si algo no anda</span>
+    <span class="eyebrow">SI ALGO NO ANDA</span>
     <h2>Preguntas frecuentes</h2>
 
     <div class="faq">
@@ -432,7 +483,10 @@
 </main>
 
 <footer>
-  <div class="wrap">Panel de Contenido — Nuevas Tendencias. Esta guía es de uso interno del equipo.</div>
+  <div class="wrap">
+    <img class="logo" src="uploads/Logo NT cuadrado.png" alt="">
+    <span>Panel de Contenido — Nuevas Tendencias. Guía de uso interno del equipo.</span>
+  </div>
 </footer>
 
 </body>
