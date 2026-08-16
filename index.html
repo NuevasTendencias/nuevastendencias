@@ -229,7 +229,20 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;whatsappNumber&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;5493731626491&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;},&quot;showTraffic&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ubicaciones&quot;}}">class Component extends DCLogic {
-  state = { menuOpen: false, activeFilter: 'Todas' };
+  state = { menuOpen: false, activeFilter: 'Todas', rawLocations: [], locationsLoaded: false };
+
+  componentDidMount() {
+    // Las ubicaciones viven en locations.json (editable desde /contenido),
+    // no hardcodeadas — mismo patrón de fetch relativo que usa <image-slot>
+    // para .image-slots.state.json.
+    fetch('./locations.json')
+      .then(function(r) { return r.ok ? r.json() : []; })
+      .then(function(data) {
+        this.setState({ rawLocations: Array.isArray(data) ? data : [], locationsLoaded: true });
+      }.bind(this))
+      .catch(function() { this.setState({ locationsLoaded: true }); }.bind(this));
+  }
+
   renderVals() {
     const whatsappNumber = this.props.whatsappNumber ? this.props.whatsappNumber : '5493731626491';
     const waMsg = encodeURIComponent('Hola, quiero consultar disponibilidad de espacios publicitarios de Nuevas Tendencias.');
@@ -241,24 +254,11 @@
       { title: 'Asesoramiento de campaña', desc: 'Te ayudamos a elegir la ubicación y el formato según el objetivo de tu marca.' }
     ];
 
-    const rawLocations = [
-      { index: '01', title: 'Puente General Belgrano', address: 'Acceso Resistencia–Corrientes, Chaco', tipo: 'Cartelera de gran formato', categoria: 'Gran Formato', traffic: 'Cruce interprovincial, alto tránsito', iluminado: true, lat: -27.463093, lng: -58.868131 },
-      { index: '02', title: 'RN16 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Avenida principal, alto tránsito', iluminado: true, lat: -27.432823, lng: -58.925944 },
-      { index: '03', title: 'Acceso por Av. 25 de mayo', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4360557, lng: -59.0035944 },
-      { index: '04', title: 'Zona Sur Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Zona de acceso, tránsito constante', iluminado: false, lat: -27.476687, lng: -59.0006444 },
-      { index: '05', title: 'Acceso Norte por Av. Sarmiento', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Alto tránsito vehicular', iluminado: true, lat: -27.4274844, lng: -58.9603094 },
-      { index: '06', title: 'RN11 Acceso a Resistencia', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Consultar', iluminado: true, lat: -27.3725140, lng: -58.9951011 },
-      { index: '07', title: 'Av. Sarmiento y Montaner', address: 'Resistencia, Chaco', tipo: 'Pantalla LED', categoria: 'Pantalla LED', traffic: 'Zona de acceso, tránsito constante', iluminado: true, lat: -27.4358395, lng: -58.969524 },
-      { index: '08', title: 'Av. Marconi y Calle Brasil', address: 'Fontana, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato', traffic: 'Avenida principal', iluminado: false, lat: -27.4228382, lng: -59.0470482 },
-      { index: '09', title: 'Ruta Nacional 16 Km29 A', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
-      { index: '10', title: 'Ruta Nacional 16 Km29 B', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
-      { index: '11', title: 'Ruta Nacional 16 Km29 C', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 },
-      { index: '12', title: 'Ruta Nacional 16 Km29 D', address: 'Resistencia, Chaco', tipo: 'Cartelera vía pública', categoria: 'Gran Formato Rutero', traffic: 'Camping Círculo de Sub Oficiales', iluminado: false, lat: -27.3361663, lng: -59.0743895 }
-    ];
+    const rawLocations = this.state.rawLocations;
     const locations = rawLocations.map(function(l, i) {
       return Object.assign({}, l, {
+        index: String(i + 1).padStart(2, '0'),
         traffic: showTraffic ? l.traffic : '',
-        imgId: 'loc-photo-' + (i + 1),
         imgPlaceholder: 'Foto del soporte — ' + l.title
       });
     });
@@ -288,7 +288,7 @@
       services: services,
       locations: filteredLocations,
       filterButtons: filterButtons,
-      hasNoResults: filteredLocations.length === 0,
+      hasNoResults: this.state.locationsLoaded && filteredLocations.length === 0,
       clientSlots: clientSlots,
       officeMapUrl: 'https://www.google.com/maps?q=' + encodeURIComponent('Güemes 76, Resistencia, Chaco, Argentina') + '&z=16&output=embed'
     };

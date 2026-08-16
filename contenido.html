@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Contenido — Nuevas Tendencias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root {
+    --purple: #3d2f77;
+    --purple-dark: #1E1B2E;
+    --purple-light: #4A3A72;
+    --blue: #00A8E4;
+    --bg: #F5F6FA;
+    --card: #FFFFFF;
+    --border: #E7E5F0;
+    --border-light: #EEEBF6;
+    --text: #1E1B2E;
+    --text-muted: #5B5670;
+    --danger: #D64545;
+    --danger-dark: #B33333;
+    --success: #1FA05A;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); }
+  button { font-family: inherit; cursor: pointer; }
+  input, select, textarea { font-family: inherit; font-size: 14.5px; }
+
+  /* ---------- Login screen ---------- */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(1100px 500px at 15% -10%, rgba(0,168,228,0.20), transparent 60%),
+                radial-gradient(900px 600px at 100% 20%, rgba(96,60,156,0.28), transparent 55%),
+                #0F0C1E;
+  }
+  #login-screen .box {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  }
+  #login-screen h1 { font-size: 21px; font-weight: 700; margin: 0 0 6px; color: var(--purple-dark); }
+  #login-screen p { font-size: 14px; color: var(--text-muted); margin: 0 0 26px; line-height: 1.5; }
+  #g_id_button { display: flex; justify-content: center; }
+  #login-error { margin-top: 18px; font-size: 13.5px; color: var(--danger); display: none; }
+  #login-loading { font-size: 13.5px; color: var(--text-muted); }
+
+  /* ---------- App shell ---------- */
+  #cms-app { display: none; min-height: 100vh; }
+  header.topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--purple-dark); color: #fff;
+    padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  header.topbar .brand { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  header.topbar .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); }
+  header.topbar .user { display: flex; align-items: center; gap: 12px; font-size: 13.5px; color: #C9C4DE; }
+  header.topbar .user button {
+    background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 100px; padding: 7px 16px; font-size: 13px; font-weight: 600;
+  }
+  header.topbar .user button:hover { background: rgba(255,255,255,0.16); }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+  .toolbar h2 { font-size: 22px; font-weight: 700; margin: 0; color: var(--purple-dark); }
+  .toolbar .filters { display: flex; gap: 10px; flex: 1; min-width: 260px; max-width: 520px; }
+  .toolbar input[type="search"], .toolbar select {
+    border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 14px; background: #fff;
+  }
+  .toolbar input[type="search"] { flex: 1; }
+  .btn-primary {
+    background: var(--purple); color: #fff; border: none; border-radius: 10px; padding: 11px 20px;
+    font-weight: 700; font-size: 14px; white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--purple-light); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  #status-bar {
+    display: none; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 10px; font-size: 13.5px;
+    margin-bottom: 18px; font-weight: 600;
+  }
+  #status-bar.info { display: flex; background: #E4F6FC; color: #00647F; }
+  #status-bar.error { display: flex; background: #FBE7E7; color: var(--danger-dark); }
+  #status-bar.success { display: flex; background: #E7F7EE; color: var(--success); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+  .loc-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .loc-card .thumb {
+    aspect-ratio: 4/3; background: #EDEAF7 center/cover no-repeat; position: relative;
+    display: flex; align-items: center; justify-content: center; color: #A79FC7; font-size: 12.5px;
+  }
+  .loc-card .body { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .loc-card .title { font-weight: 700; font-size: 15px; line-height: 1.3; }
+  .loc-card .addr { font-size: 13px; color: var(--text-muted); }
+  .loc-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .tag { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 100px; background: var(--border-light); color: var(--purple-light); }
+  .tag.on { background: #E4F6FC; color: #00647F; }
+  .tag.off { background: #F5F6FA; color: var(--text-muted); }
+  .loc-card .actions { margin-top: auto; display: flex; gap: 8px; padding-top: 10px; }
+  .loc-card .actions button {
+    flex: 1; border-radius: 8px; padding: 9px 10px; font-size: 13px; font-weight: 700; border: 1.5px solid var(--border);
+    background: #fff; color: var(--purple-light);
+  }
+  .loc-card .actions button:hover { border-color: var(--purple); }
+  .loc-card .actions button.danger { color: var(--danger); }
+  .loc-card .actions button.danger:hover { border-color: var(--danger); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 14.5px; }
+
+  /* ---------- Slide-over form panel ---------- */
+  #overlay { position: fixed; inset: 0; background: rgba(15,12,30,0.5); z-index: 40; display: none; }
+  #panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 460px; background: #fff; z-index: 41;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.2); display: none; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.22s ease;
+  }
+  #panel.open { transform: translateX(0); }
+  #panel .panel-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between;
+  }
+  #panel .panel-header h3 { margin: 0; font-size: 17px; }
+  #panel .panel-header button { background: none; border: none; font-size: 20px; color: var(--text-muted); line-height: 1; padding: 4px; }
+  #panel form { padding: 20px 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .field input[type="text"], .field select, .field textarea {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 12px; font-size: 14.5px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--purple); }
+  .field .hint { font-size: 12px; color: #9089A8; margin-top: 5px; }
+  .checkbox-row { display: flex; align-items: center; gap: 10px; }
+  .checkbox-row input { width: 18px; height: 18px; }
+  .checkbox-row label { margin: 0; font-size: 14px; font-weight: 600; color: var(--text); text-transform: none; }
+
+  #dropzone {
+    border: 2px dashed var(--border); border-radius: 12px; padding: 18px; text-align: center; cursor: pointer;
+    background: #FBFAFD; position: relative; min-height: 140px; display: flex; align-items: center; justify-content: center;
+  }
+  #dropzone.drag { border-color: var(--purple); background: #F2EDFB; }
+  #dropzone .placeholder { font-size: 13px; color: var(--text-muted); }
+  #dropzone img { max-width: 100%; max-height: 160px; border-radius: 8px; }
+  #dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  #remove-image-btn { font-size: 12.5px; color: var(--danger); background: none; border: none; text-decoration: underline; margin-top: 6px; align-self: flex-start; }
+
+  #panel .panel-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); display: flex; gap: 10px; }
+  .btn-secondary {
+    flex: 1; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 16px; font-weight: 700; font-size: 14px; color: var(--text);
+  }
+  .btn-secondary:hover { border-color: var(--purple); }
+  #panel .panel-footer .btn-primary { flex: 1.3; }
+
+  .field-error { font-size: 12.5px; color: var(--danger); margin-top: 4px; display: none; }
+
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="login-screen">
+  <div class="box">
+    <h1>Panel de Contenido</h1>
+    <p id="login-sub">Nuevas Tendencias — Iniciá sesión con tu cuenta de Google para administrar las ubicaciones.</p>
+    <div id="g_id_button"></div>
+    <div id="login-loading">Cargando…</div>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- ============ CMS APP ============ -->
+<div id="cms-app">
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> Contenido · Nuevas Tendencias</div>
+    <div class="user">
+      <span id="user-email"></span>
+      <button id="logout-btn" type="button">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status-bar"></div>
+
+    <div class="toolbar">
+      <h2>Ubicaciones</h2>
+      <div class="filters">
+        <input type="search" id="search-input" placeholder="Buscar por título o dirección…">
+        <select id="category-filter">
+          <option value="">Todas las categorías</option>
+          <option>Gran Formato</option>
+          <option>Gran Formato Rutero</option>
+          <option>Pantalla LED</option>
+          <option>Séxtuples</option>
+          <option>Hipervallas</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="new-btn" type="button">+ Nueva ubicación</button>
+    </div>
+
+    <div id="list-container">
+      <div class="empty-state">Cargando ubicaciones…</div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ FORM PANEL ============ -->
+<div id="overlay"></div>
+<div id="panel">
+  <div class="panel-header">
+    <h3 id="panel-title">Nueva ubicación</h3>
+    <button type="button" id="panel-close" aria-label="Cerrar">×</button>
+  </div>
+  <form id="loc-form">
+    <div class="field">
+      <label for="f-title">Título</label>
+      <input type="text" id="f-title" required>
+    </div>
+    <div class="field">
+      <label for="f-address">Dirección</label>
+      <input type="text" id="f-address" required>
+    </div>
+    <div class="field">
+      <label for="f-tipo">Tipo</label>
+      <input type="text" id="f-tipo" placeholder="Ej: Cartelera vía pública, Pantalla LED" required>
+    </div>
+    <div class="field">
+      <label for="f-categoria">Categoría</label>
+      <select id="f-categoria" required>
+        <option>Gran Formato</option>
+        <option>Gran Formato Rutero</option>
+        <option>Pantalla LED</option>
+        <option>Séxtuples</option>
+        <option>Hipervallas</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-traffic">Tránsito / zona</label>
+      <input type="text" id="f-traffic" placeholder="Ej: Alto tránsito vehicular">
+    </div>
+    <div class="field checkbox-row">
+      <input type="checkbox" id="f-iluminado">
+      <label for="f-iluminado">Iluminado</label>
+    </div>
+    <div class="field">
+      <label for="f-coords">Coordenadas (lat, lng)</label>
+      <input type="text" id="f-coords" placeholder="-27.463093, -58.868131" required>
+      <div class="hint">Pegá el par lat/lng tal cual lo copiás de Google Maps.</div>
+      <div class="field-error" id="f-coords-error">Formato inválido. Usá "lat, lng", por ejemplo -27.463093, -58.868131</div>
+    </div>
+    <div class="field">
+      <label>Foto</label>
+      <div id="dropzone">
+        <input type="file" id="f-image" accept="image/png,image/jpeg,image/webp">
+        <div id="dropzone-content" class="placeholder">Arrastrá una imagen o hacé clic para elegirla<br>(se redimensiona a 1200px y se convierte a WebP)</div>
+      </div>
+      <button type="button" id="remove-image-btn" hidden>Quitar imagen</button>
+      <div class="hint" id="img-id-hint"></div>
+    </div>
+  </form>
+  <div class="panel-footer">
+    <button type="button" class="btn-secondary" id="cancel-btn">Cancelar</button>
+    <button type="submit" form="loc-form" class="btn-primary" id="save-btn">Guardar</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const LOCATIONS_PATH = 'locations.json';
+  const IMAGES_PATH = '.image-slots.state.json';
+  const SESSION_KEY = 'nt_cms_id_token';
+  const MAX_IMAGE_WIDTH = 1200;
+  const WEBP_QUALITY = 0.85;
+
+  const CATEGORIES = ['Gran Formato', 'Gran Formato Rutero', 'Pantalla LED', 'Séxtuples', 'Hipervallas'];
+
+  let CONFIG = null;
+  let idToken = sessionStorage.getItem(SESSION_KEY) || null;
+
+  let DATA = { locations: [], locationsSha: null, images: {}, imagesSha: null };
+  let FORM = { editingId: null, pendingImageDataUrl: null, pendingImageId: null, removeImage: false };
+
+  // ---------- small DOM helpers ----------
+  const $ = (sel) => document.querySelector(sel);
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function setStatus(kind, message) {
+    const el = $('#status-bar');
+    if (!kind) { el.className = ''; el.textContent = ''; return; }
+    el.className = kind;
+    el.textContent = message;
+  }
+
+  // ---------- boot ----------
+  async function boot() {
+    try {
+      const r = await fetch('/api/config');
+      CONFIG = await r.json();
+    } catch (e) {
+      $('#login-loading').style.display = 'none';
+      showLoginError('No se pudo cargar la configuración del servidor.');
+      return;
+    }
+    if (!CONFIG.googleClientId || !CONFIG.allowedEmailDomain) {
+      $('#login-loading').style.display = 'none';
+      showLoginError('El servidor no tiene configuradas las variables de entorno (GOOGLE_CLIENT_ID / ALLOWED_EMAIL_DOMAIN).');
+      return;
+    }
+    $('#login-sub').textContent = 'Nuevas Tendencias — Acceso restringido a cuentas @' + CONFIG.allowedEmailDomain + '.';
+
+    waitForGoogleSdk().then(function () {
+      google.accounts.id.initialize({ client_id: CONFIG.googleClientId, callback: onCredentialResponse });
+      google.accounts.id.renderButton($('#g_id_button'), { theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', locale: 'es' });
+      $('#login-loading').style.display = 'none';
+    });
+
+    if (idToken) {
+      // Sesión previa en este tab: intentamos usarla directamente; si expiró,
+      // la primera llamada a la API la rechaza y volvemos al login.
+      showApp();
+      loadAll();
+    }
+  }
+
+  function waitForGoogleSdk() {
+    return new Promise(function (resolve) {
+      (function poll() {
+        if (window.google && window.google.accounts && window.google.accounts.id) resolve();
+        else setTimeout(poll, 100);
+      })();
+    });
+  }
+
+  function showLoginError(msg) {
+    const el = $('#login-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function decodeJwtPayload(token) {
+    try {
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join('')));
+    } catch (e) { return {}; }
+  }
+
+  function onCredentialResponse(response) {
+    idToken = response.credential;
+    sessionStorage.setItem(SESSION_KEY, idToken);
+    showApp();
+    loadAll();
+  }
+
+  function showApp() {
+    const claims = decodeJwtPayload(idToken);
+    $('#user-email').textContent = claims.email || '';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('cms-app').style.display = 'block';
+  }
+
+  function logout() {
+    idToken = null;
+    sessionStorage.removeItem(SESSION_KEY);
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+    document.getElementById('cms-app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+
+  function sessionExpired() {
+    setStatus(null);
+    logout();
+    showLoginError('Tu sesión expiró. Iniciá sesión nuevamente.');
+  }
+
+  // ---------- API ----------
+  async function apiCall(payload) {
+    const res = await fetch('/api/github-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+      body: JSON.stringify(payload),
+    });
+    if (res.status === 401) { sessionExpired(); throw new Error('Sesión expirada.'); }
+    const json = await res.json().catch(function () { return { ok: false, error: 'Respuesta inválida del servidor.' }; });
+    if (!res.ok || !json.ok) throw new Error(json.error || ('Error del servidor (' + res.status + ')'));
+    return json;
+  }
+
+  async function loadAll() {
+    setStatus('info', 'Cargando ubicaciones…');
+    try {
+      const result = await apiCall({ action: 'read', paths: [LOCATIONS_PATH, IMAGES_PATH] });
+      const locFile = result.files[LOCATIONS_PATH];
+      const imgFile = result.files[IMAGES_PATH];
+      DATA.locations = locFile.content ? JSON.parse(locFile.content) : [];
+      DATA.locationsSha = locFile.sha;
+      DATA.images = imgFile.content ? JSON.parse(imgFile.content) : {};
+      DATA.imagesSha = imgFile.sha;
+      setStatus(null);
+      renderList();
+    } catch (e) {
+      setStatus('error', 'No se pudieron cargar los datos: ' + e.message);
+    }
+  }
+
+  // ---------- list rendering ----------
+  function filteredLocations() {
+    const q = $('#search-input').value.trim().toLowerCase();
+    const cat = $('#category-filter').value;
+    return DATA.locations.filter(function (l) {
+      if (cat && l.categoria !== cat) return false;
+      if (q && !((l.title || '').toLowerCase().includes(q) || (l.address || '').toLowerCase().includes(q))) return false;
+      return true;
+    });
+  }
+
+  function renderList() {
+    const list = filteredLocations();
+    const container = $('#list-container');
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty-state">No hay ubicaciones que coincidan.</div>';
+      return;
+    }
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    list.forEach(function (loc) {
+      const img = DATA.images[loc.imgId];
+      const card = document.createElement('div');
+      card.className = 'loc-card';
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      if (img && img.u) {
+        thumb.style.backgroundImage = 'url(' + img.u + ')';
+      } else {
+        thumb.textContent = 'Sin foto';
+      }
+      card.appendChild(thumb);
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      body.innerHTML =
+        '<div class="title">' + escapeHtml(loc.title) + '</div>' +
+        '<div class="addr">' + escapeHtml(loc.address) + '</div>' +
+        '<div class="tags">' +
+          '<span class="tag">' + escapeHtml(loc.categoria) + '</span>' +
+          '<span class="tag ' + (loc.iluminado ? 'on' : 'off') + '">' + (loc.iluminado ? 'Iluminado' : 'Sin iluminación') + '</span>' +
+        '</div>' +
+        '<div class="actions">' +
+          '<button type="button" data-action="edit">Editar</button>' +
+          '<button type="button" data-action="delete" class="danger">Eliminar</button>' +
+        '</div>';
+      body.querySelector('[data-action="edit"]').addEventListener('click', function () { openForm(loc); });
+      body.querySelector('[data-action="delete"]').addEventListener('click', function () { confirmDelete(loc); });
+      card.appendChild(body);
+      grid.appendChild(card);
+    });
+    container.innerHTML = '';
+    container.appendChild(grid);
+  }
+
+  // ---------- form panel ----------
+  function openForm(loc) {
+    FORM = { editingId: loc ? loc.id : null, pendingImageDataUrl: null, pendingImageId: null, removeImage: false };
+    $('#panel-title').textContent = loc ? 'Editar ubicación' : 'Nueva ubicación';
+    $('#f-title').value = loc ? loc.title || '' : '';
+    $('#f-address').value = loc ? loc.address || '' : '';
+    $('#f-tipo').value = loc ? loc.tipo || '' : '';
+    $('#f-categoria').value = loc && CATEGORIES.includes(loc.categoria) ? loc.categoria : CATEGORIES[0];
+    $('#f-traffic').value = loc ? loc.traffic || '' : '';
+    $('#f-iluminado').checked = !!(loc && loc.iluminado);
+    $('#f-coords').value = loc ? (loc.lat + ', ' + loc.lng) : '';
+    $('#f-coords-error').style.display = 'none';
+    $('#f-image').value = '';
+    $('#remove-image-btn').hidden = true;
+
+    const existingImg = loc && DATA.images[loc.imgId];
+    if (existingImg && existingImg.u) {
+      setDropzonePreview(existingImg.u);
+      $('#remove-image-btn').hidden = false;
+    } else {
+      resetDropzone();
+    }
+    $('#img-id-hint').textContent = loc ? ('ID de imagen: ' + loc.imgId) : 'El ID de imagen se genera automáticamente al subir una foto.';
+
+    $('#overlay').style.display = 'block';
+    $('#panel').style.display = 'flex';
+    requestAnimationFrame(function () { $('#panel').classList.add('open'); });
+  }
+
+  function closeForm() {
+    $('#panel').classList.remove('open');
+    setTimeout(function () {
+      $('#panel').style.display = 'none';
+      $('#overlay').style.display = 'none';
+    }, 220);
+  }
+
+  function resetDropzone() {
+    $('#dropzone-content').innerHTML = 'Arrastrá una imagen o hacé clic para elegirla<br>(se redimensiona a 1200px y se convierte a WebP)';
+  }
+  function setDropzonePreview(dataUrl) {
+    $('#dropzone-content').innerHTML = '';
+    const img = document.createElement('img');
+    img.src = dataUrl;
+    $('#dropzone-content').appendChild(img);
+  }
+
+  function fileToWebp(file, maxWidth, quality) {
+    return new Promise(function (resolve, reject) {
+      if (!file.type || !file.type.startsWith('image/')) { reject(new Error('El archivo no es una imagen.')); return; }
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () {
+        const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(objectUrl);
+        resolve(canvas.toDataURL('image/webp', quality));
+      };
+      img.onerror = function () { URL.revokeObjectURL(objectUrl); reject(new Error('No se pudo leer la imagen.')); };
+      img.src = objectUrl;
+    });
+  }
+
+  async function handleImageFile(file) {
+    if (!file) return;
+    try {
+      const dataUrl = await fileToWebp(file, MAX_IMAGE_WIDTH, WEBP_QUALITY);
+      FORM.pendingImageDataUrl = dataUrl;
+      FORM.pendingImageId = FORM.editingId
+        ? (DATA.locations.find(function (l) { return l.id === FORM.editingId; }) || {}).imgId
+        : 'loc-photo-' + Date.now();
+      FORM.removeImage = false;
+      setDropzonePreview(dataUrl);
+      $('#remove-image-btn').hidden = false;
+    } catch (e) {
+      setStatus('error', 'Error procesando la imagen: ' + e.message);
+    }
+  }
+
+  function parseCoords(raw) {
+    const m = String(raw || '').trim().match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+    if (!m) return null;
+    return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+  }
+
+  async function onSubmitForm(e) {
+    e.preventDefault();
+    const coords = parseCoords($('#f-coords').value);
+    if (!coords) { $('#f-coords-error').style.display = 'block'; return; }
+    $('#f-coords-error').style.display = 'none';
+
+    const saveBtn = $('#save-btn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="spinner"></span>Guardando…';
+    setStatus('info', 'Guardando cambios en GitHub…');
+
+    try {
+      const isNew = !FORM.editingId;
+      const id = FORM.editingId || ('loc-' + Date.now());
+      const existing = !isNew && DATA.locations.find(function (l) { return l.id === id; });
+      const imgId = FORM.pendingImageId || (existing && existing.imgId) || ('loc-photo-' + Date.now());
+
+      const record = {
+        id: id,
+        title: $('#f-title').value.trim(),
+        address: $('#f-address').value.trim(),
+        tipo: $('#f-tipo').value.trim(),
+        categoria: $('#f-categoria').value,
+        traffic: $('#f-traffic').value.trim(),
+        iluminado: $('#f-iluminado').checked,
+        lat: coords.lat,
+        lng: coords.lng,
+        imgId: imgId,
+      };
+
+      const newLocations = isNew
+        ? DATA.locations.concat([record])
+        : DATA.locations.map(function (l) { return l.id === id ? record : l; });
+
+      const newImages = Object.assign({}, DATA.images);
+      if (FORM.pendingImageDataUrl) {
+        newImages[imgId] = { u: FORM.pendingImageDataUrl, s: 1, x: 0, y: 0 };
+      } else if (FORM.removeImage && existing) {
+        delete newImages[existing.imgId];
+      }
+
+      const files = [];
+      const imagesChanged = JSON.stringify(newImages) !== JSON.stringify(DATA.images);
+      if (imagesChanged) {
+        files.push({ path: IMAGES_PATH, content: JSON.stringify(newImages), message: 'CMS: actualiza imagen de "' + record.title + '"' });
+      }
+      files.push({ path: LOCATIONS_PATH, content: JSON.stringify(newLocations, null, 2), message: 'CMS: ' + (isNew ? 'crea' : 'edita') + ' ubicación "' + record.title + '"' });
+
+      await apiCall({ action: 'write', files: files });
+
+      DATA.locations = newLocations;
+      DATA.images = newImages;
+      setStatus('success', 'Guardado. El sitio se actualizará en unos minutos cuando Vercel termine de desplegar.');
+      renderList();
+      closeForm();
+    } catch (e) {
+      setStatus('error', 'No se pudo guardar: ' + e.message);
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Guardar';
+    }
+  }
+
+  async function confirmDelete(loc) {
+    if (!window.confirm('¿Eliminar "' + loc.title + '"? Esta acción no se puede deshacer.')) return;
+    setStatus('info', 'Eliminando…');
+    try {
+      const newLocations = DATA.locations.filter(function (l) { return l.id !== loc.id; });
+      const newImages = Object.assign({}, DATA.images);
+      delete newImages[loc.imgId];
+
+      // locations.json primero: nunca deja una referencia a una imagen ya borrada.
+      await apiCall({
+        action: 'write',
+        files: [
+          { path: LOCATIONS_PATH, content: JSON.stringify(newLocations, null, 2), message: 'CMS: elimina ubicación "' + loc.title + '"' },
+          { path: IMAGES_PATH, content: JSON.stringify(newImages), message: 'CMS: limpia imagen de "' + loc.title + '"' },
+        ],
+      });
+
+      DATA.locations = newLocations;
+      DATA.images = newImages;
+      setStatus('success', 'Ubicación eliminada.');
+      renderList();
+    } catch (e) {
+      setStatus('error', 'No se pudo eliminar: ' + e.message);
+    }
+  }
+
+  // ---------- wiring ----------
+  document.addEventListener('DOMContentLoaded', function () {
+    $('#logout-btn').addEventListener('click', logout);
+    $('#new-btn').addEventListener('click', function () { openForm(null); });
+    $('#panel-close').addEventListener('click', closeForm);
+    $('#cancel-btn').addEventListener('click', closeForm);
+    $('#overlay').addEventListener('click', closeForm);
+    $('#loc-form').addEventListener('submit', onSubmitForm);
+    $('#search-input').addEventListener('input', renderList);
+    $('#category-filter').addEventListener('change', renderList);
+
+    $('#f-image').addEventListener('change', function (e) {
+      if (e.target.files && e.target.files[0]) handleImageFile(e.target.files[0]);
+    });
+    const dropzone = $('#dropzone');
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.add('drag'); });
+    });
+    ['dragleave', 'drop'].forEach(function (evt) {
+      dropzone.addEventListener(evt, function (e) { e.preventDefault(); dropzone.classList.remove('drag'); });
+    });
+    dropzone.addEventListener('drop', function (e) {
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) handleImageFile(file);
+    });
+    $('#remove-image-btn').addEventListener('click', function () {
+      FORM.pendingImageDataUrl = null;
+      FORM.removeImage = true;
+      resetDropzone();
+      $('#remove-image-btn').hidden = true;
+    });
+
+    boot();
+  });
+})();
+</script>
+</body>
+</html>
